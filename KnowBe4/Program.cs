@@ -81,7 +81,9 @@ app.MapGet("/account", () => Results.Ok())
 
 app.MapGet("/account/risk_score_history",
         (
-            [FromQuery(Name = "full")] bool? full
+            [FromQuery(Name = "full")] bool? full,
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage
         ) => Results.Ok())
     .WithName("GetAccountRiskScoreHistory")
     .WithTags("Account")
@@ -96,7 +98,9 @@ app.MapGet("/users",
         (
             [FromQuery(Name = "status")] Status? status,
             [FromQuery(Name = "group_id")]int? groupId,
-            [FromQuery(Name = "expand")]Expand? expand
+            [FromQuery(Name = "expand")]Expand? expand,
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage
         ) => Results.Ok())
     .WithName("GetAListOfUsers")
     .WithTags("Users")
@@ -120,7 +124,9 @@ app.MapGet("/users/{user_id}",
 
 app.MapGet("/groups/{group_id}/users",
         (
-            [FromRoute(Name = "group_id")] int groupId
+            [FromRoute(Name = "group_id")] int groupId,
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage
         ) => Results.Ok())
     .WithName("GetAListOfUsersInASpecificGroup")
     .WithTags("Users")
@@ -145,7 +151,9 @@ app.MapGet("/users/{user_id}/risk_score_history",
 // Groups
 app.MapGet("/groups",
         (
-            [FromQuery(Name = "status")] Status? status
+            [FromQuery(Name = "status")] Status? status,
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage
         ) => Results.Ok())
     .WithName("GetAListOfAllGroups")
     .WithTags("Groups")
@@ -180,7 +188,11 @@ app.MapGet("/group/{group_id}/risk_score_history",
     });
 
 // Phishing
-app.MapGet("/phishing/campaigns", () => Results.Ok())
+app.MapGet("/phishing/campaigns",
+        (
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage    
+        ) => Results.Ok())
     .WithName("GetAListOfAllPhishingCampaigns")
     .WithTags("Phishing")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -204,7 +216,9 @@ app.MapGet("/phishing/campaigns/{campaign_id}",
 
 app.MapGet("/phishing/security_tests",
         (
-            [FromQuery(Name = "campaign_type")] CampaignType? campaignType
+            [FromQuery(Name = "campaign_type")] CampaignType? campaignType,
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage
         ) => Results.Ok())
     .WithName("GetAllPhishingSecurityTests")
     .WithTags("Phishing")
@@ -243,7 +257,9 @@ app.MapGet("/phishing/security_tests/{pst_id}",
 app.MapGet("/phishing/security_tests/{pst_id}/recipients",
         (
             [FromRoute(Name = "pst_id")] int pstId,
-            [FromQuery(Name = "campaign_type")] CampaignType? campaignType
+            [FromQuery(Name = "campaign_type")] CampaignType? campaignType,
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage
         ) => Results.Ok())
     .WithName("GetAllRecipientResults")
     .WithTags("Phishing")
@@ -268,7 +284,11 @@ app.MapGet("/phishing/security_tests/{pst_id}/recipients/{recipient_id}",
     });
 
 // Training
-app.MapGet("/training/store_purchases", () => Results.Ok())
+app.MapGet("/training/store_purchases",
+        (
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage    
+        ) => Results.Ok())
     .WithName("GetAllStorePurchases")
     .WithTags("Training")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -289,7 +309,11 @@ app.MapGet("/training/store_purchases/{store_purchase_id}",
         Description = "This endpoint retrieves a specific Store Purchase from your KnowBe4 account."
     });
 
-app.MapGet("/training/policies", () => Results.Ok())
+app.MapGet("/training/policies",
+        (
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage    
+        ) => Results.Ok())
     .WithName("GetAllPolicies")
     .WithTags("Training")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -312,7 +336,9 @@ app.MapGet("/training/policies/{policies_id}",
 
 app.MapGet("/training/campaigns",
         (
-            [FromQuery(Name = "exclude_percentages")] bool? excludePercentages
+            [FromQuery(Name = "exclude_percentages")] bool? excludePercentages,
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage
         ) => Results.Ok())
     .WithName("GetAllTrainingCampaigns")
     .WithTags("Training")
@@ -341,7 +367,9 @@ app.MapGet("/training/enrollments",
             [FromQuery(Name = "store_purchase_id")] int? storePurchaseId,
             [FromQuery(Name = "include_store_purchase_id")] bool? includeStorePurchaseId,
             [FromQuery(Name = "campaign_id")] int? campaignId,
-            [FromQuery(Name = "include_campaign_id")] bool? includeCampaignId
+            [FromQuery(Name = "include_campaign_id")] bool? includeCampaignId,
+            [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "perPage")] int? perPage
         ) => Results.Ok())
     .WithName("GetAllTrainingEnrollments")
     .WithTags("Training")
