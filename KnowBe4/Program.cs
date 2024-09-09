@@ -83,7 +83,7 @@ app.MapGet("/account/risk_score_history",
         (
             [FromQuery(Name = "full")] bool? full,
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage
+            [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
     .WithName("GetAccountRiskScoreHistory")
     .WithTags("Account")
@@ -100,7 +100,7 @@ app.MapGet("/users",
             [FromQuery(Name = "group_id")]int? groupId,
             [FromQuery(Name = "expand")]Expand? expand,
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage
+            [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
     .WithName("GetAListOfUsers")
     .WithTags("Users")
@@ -126,7 +126,7 @@ app.MapGet("/groups/{group_id}/users",
         (
             [FromRoute(Name = "group_id")] int groupId,
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage
+            [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
     .WithName("GetAListOfUsersInASpecificGroup")
     .WithTags("Users")
@@ -153,7 +153,7 @@ app.MapGet("/groups",
         (
             [FromQuery(Name = "status")] Status? status,
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage
+            [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
     .WithName("GetAListOfAllGroups")
     .WithTags("Groups")
@@ -191,7 +191,7 @@ app.MapGet("/group/{group_id}/risk_score_history",
 app.MapGet("/phishing/campaigns",
         (
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage    
+            [FromQuery(Name = "per_page")] int? perPage    
         ) => Results.Ok())
     .WithName("GetAListOfAllPhishingCampaigns")
     .WithTags("Phishing")
@@ -218,7 +218,7 @@ app.MapGet("/phishing/security_tests",
         (
             [FromQuery(Name = "campaign_type")] CampaignType? campaignType,
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage
+            [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
     .WithName("GetAllPhishingSecurityTests")
     .WithTags("Phishing")
@@ -259,7 +259,7 @@ app.MapGet("/phishing/security_tests/{pst_id}/recipients",
             [FromRoute(Name = "pst_id")] int pstId,
             [FromQuery(Name = "campaign_type")] CampaignType? campaignType,
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage
+            [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
     .WithName("GetAllRecipientResults")
     .WithTags("Phishing")
@@ -287,7 +287,7 @@ app.MapGet("/phishing/security_tests/{pst_id}/recipients/{recipient_id}",
 app.MapGet("/training/store_purchases",
         (
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage    
+            [FromQuery(Name = "per_page")] int? perPage    
         ) => Results.Ok())
     .WithName("GetAllStorePurchases")
     .WithTags("Training")
@@ -312,7 +312,7 @@ app.MapGet("/training/store_purchases/{store_purchase_id}",
 app.MapGet("/training/policies",
         (
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage    
+            [FromQuery(Name = "per_page")] int? perPage    
         ) => Results.Ok())
     .WithName("GetAllPolicies")
     .WithTags("Training")
@@ -338,7 +338,7 @@ app.MapGet("/training/campaigns",
         (
             [FromQuery(Name = "exclude_percentages")] bool? excludePercentages,
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage
+            [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
     .WithName("GetAllTrainingCampaigns")
     .WithTags("Training")
@@ -369,7 +369,7 @@ app.MapGet("/training/enrollments",
             [FromQuery(Name = "campaign_id")] int? campaignId,
             [FromQuery(Name = "include_campaign_id")] bool? includeCampaignId,
             [FromQuery(Name = "page")] int? page,
-            [FromQuery(Name = "perPage")] int? perPage
+            [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
     .WithName("GetAllTrainingEnrollments")
     .WithTags("Training")
