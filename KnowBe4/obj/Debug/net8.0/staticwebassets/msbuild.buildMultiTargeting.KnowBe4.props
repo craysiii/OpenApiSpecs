@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\KnowBe4.props" />
+</Project>

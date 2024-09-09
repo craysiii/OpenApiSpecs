@@ -1,0 +1,8 @@
+﻿services:
+  knowbe4:
+    image: knowbe4
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9650:8080"
