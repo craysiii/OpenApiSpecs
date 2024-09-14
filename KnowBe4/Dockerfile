@@ -1,7 +1,5 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-# Not supposed to run as root!
-# Figure out how to get rid of this (Playwright installation requiring it)
-USER root
+USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
