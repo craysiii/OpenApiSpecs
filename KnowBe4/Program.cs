@@ -1,15 +1,15 @@
-
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Serialization of enums to strings instead of ints
+// Configure serialization
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
 });
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
 });
 
 var servers = new List<OpenApiServer>
@@ -50,7 +50,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "KnowBe4 Reporting",
-        Description = "KnowBe4’s Reporting APIs are REST APIs that allow you to pull phishing, training, user, and group data from the KnowBe4 console.\n\nCorresponding documentation from KnowBe4 can be found here: <a href=\"https://developer.knowbe4.com/rest/reporting\">https://developer.knowbe4.com/rest/reporting</a>",
+        Description = "KnowBe4’s Reporting APIs are REST APIs that allow you to pull phishing, training, user, and group data from the KnowBe4 console.",
         
     });
 });
@@ -66,6 +66,7 @@ app.UseSwaggerUI(options =>
 
 // Account
 app.MapGet("/account", () => Results.Ok())
+    .Produces<Account>()
     .WithName("GetAccountAndSubscriptionData")
     .WithTags("Account")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -81,6 +82,7 @@ app.MapGet("/account/risk_score_history",
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
+    .Produces<List<HistoricalRiskScore>>()
     .WithName("GetAccountRiskScoreHistory")
     .WithTags("Account")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -98,6 +100,7 @@ app.MapGet("/users",
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
+    .Produces<List<User>>()
     .WithName("GetAListOfUsers")
     .WithTags("Users")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -110,6 +113,7 @@ app.MapGet("/users/{user_id}",
     (
         [FromRoute(Name = "user_id")] int userId
     ) => Results.Ok())
+    .Produces<User>()
     .WithName("GetASpecificUser")
     .WithTags("Users")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -118,12 +122,13 @@ app.MapGet("/users/{user_id}",
         Description = "This endpoint retrieves a specific user based on the provided user identifier (user_id)."
     });
 
-app.MapGet("/groups/{group_id}/users",
+app.MapGet("/groups/{group_id}/members",
         (
             [FromRoute(Name = "group_id")] int groupId,
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
+    .Produces<List<User>>()
     .WithName("GetAListOfUsersInASpecificGroup")
     .WithTags("Users")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -136,6 +141,7 @@ app.MapGet("/users/{user_id}/risk_score_history",
         (
             [FromRoute(Name = "user_id")] int userId
         ) => Results.Ok())
+    .Produces<List<HistoricalRiskScore>>()
     .WithName("GetASpecificUsersRiskScoreHistory")
     .WithTags("Users")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -151,6 +157,7 @@ app.MapGet("/groups",
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
+    .Produces<List<Group>>()
     .WithName("GetAListOfAllGroups")
     .WithTags("Groups")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -163,6 +170,7 @@ app.MapGet("/groups/{group_id}",
         (
             [FromRoute(Name = "group_id")] int groupId
         ) => Results.Ok())
+    .Produces<Group>()
     .WithName("GetASpecificGroup")
     .WithTags("Groups")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -175,6 +183,7 @@ app.MapGet("/group/{group_id}/risk_score_history",
         (
             [FromRoute(Name = "group_id")] int groupId
         ) => Results.Ok())
+    .Produces<List<HistoricalRiskScore>>()
     .WithName("GetASpecificGroupsRiskScoreHistory")
     .WithTags("Groups")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -189,6 +198,7 @@ app.MapGet("/phishing/campaigns",
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage    
         ) => Results.Ok())
+    .Produces<List<PhishingCampaign>>()
     .WithName("GetAListOfAllPhishingCampaigns")
     .WithTags("Phishing")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -202,6 +212,7 @@ app.MapGet("/phishing/campaigns/{campaign_id}",
             [FromRoute(Name = "campaign_id")] int campaignId,
             [FromQuery(Name = "campaign_type")] CampaignType? campaignType
         ) => Results.Ok())
+    .Produces<PhishingCampaign>()
     .WithName("GetASpecificPhishingCampaign")
     .WithTags("Phishing")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -216,6 +227,7 @@ app.MapGet("/phishing/security_tests",
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
+    .Produces<List<PhishingSecurityTest>>()
     .WithName("GetAllPhishingSecurityTests")
     .WithTags("Phishing")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -229,6 +241,7 @@ app.MapGet("/phishing/campaigns/{campaign_id}/security_tests",
             [FromRoute(Name = "campaign_id")] int campaignId,
             [FromQuery(Name = "campaign_type")] CampaignType? campaignType
         ) => Results.Ok())
+    .Produces<List<PhishingSecurityTest>>()
     .WithName("GetAllPSTsFromASpecificCampaign")
     .WithTags("Phishing")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -242,6 +255,7 @@ app.MapGet("/phishing/security_tests/{pst_id}",
             [FromRoute(Name = "pst_id")] int pstId,
             [FromQuery(Name = "campaign_type")] CampaignType? campaignType
         ) => Results.Ok())
+    .Produces<PhishingSecurityTest>()
     .WithName("GetASpecificPST")
     .WithTags("Phishing")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -257,6 +271,7 @@ app.MapGet("/phishing/security_tests/{pst_id}/recipients",
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
+    .Produces<List<RecipientResult>>()
     .WithName("GetAllRecipientResults")
     .WithTags("Phishing")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -271,6 +286,7 @@ app.MapGet("/phishing/security_tests/{pst_id}/recipients/{recipient_id}",
             [FromRoute(Name = "recipient_id")] int recipientId,
             [FromQuery(Name = "campaign_type")] CampaignType? campaignType
         ) => Results.Ok())
+    .Produces<RecipientResult>()
     .WithName("GetASpecificRecipientsResults")
     .WithTags("Phishing")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -285,6 +301,7 @@ app.MapGet("/training/store_purchases",
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage    
         ) => Results.Ok())
+    .Produces<List<StorePurchase>>()
     .WithName("GetAllStorePurchases")
     .WithTags("Training")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -297,6 +314,7 @@ app.MapGet("/training/store_purchases/{store_purchase_id}",
         (
             [FromRoute(Name = "store_purchase_id")] int storePurchaseId
         ) => Results.Ok())
+    .Produces<StorePurchase>()
     .WithName("GetASpecificStorePurchase")
     .WithTags("Training")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -310,6 +328,7 @@ app.MapGet("/training/policies",
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage    
         ) => Results.Ok())
+    .Produces<List<Policy>>()
     .WithName("GetAllPolicies")
     .WithTags("Training")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -322,6 +341,7 @@ app.MapGet("/training/policies/{policies_id}",
         (
             [FromRoute(Name = "policies_id")] int policiesId
         ) => Results.Ok())
+    .Produces<Policy>()
     .WithName("GetASpecificPolicy")
     .WithTags("Training")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -336,6 +356,7 @@ app.MapGet("/training/campaigns",
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
+    .Produces<List<TrainingCampaign>>()
     .WithName("GetAllTrainingCampaigns")
     .WithTags("Training")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -348,6 +369,7 @@ app.MapGet("/training/campaigns/{campaign_id}",
         (
             [FromRoute(Name = "campaign_id")] int campaignId
         ) => Results.Ok())
+    .Produces<TrainingCampaign>()
     .WithName("GetASpecificTrainingCampaign")
     .WithTags("Training")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -367,6 +389,7 @@ app.MapGet("/training/enrollments",
             [FromQuery(Name = "page")] int? page,
             [FromQuery(Name = "per_page")] int? perPage
         ) => Results.Ok())
+    .Produces<List<TrainingEnrollment>>()
     .WithName("GetAllTrainingEnrollments")
     .WithTags("Training")
     .WithOpenApi(operation => new OpenApiOperation(operation)
@@ -380,6 +403,7 @@ app.MapGet("/training/enrollments/{enrollment_id}",
             [FromRoute(Name = "enrollment_id")] int enrollmentId,
             [FromQuery(Name = "include_campaign_id")] bool? includeCampaignId
         ) => Results.Ok())
+    .Produces<TrainingEnrollment>()
     .WithName("GetASpecificTrainingEnrollment")
     .WithTags("Training")
     .WithOpenApi(operation => new OpenApiOperation(operation)
