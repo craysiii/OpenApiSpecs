@@ -1,0 +1,2177 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "KnowBe4 Reporting",
+    "description": "KnowBe4’s Reporting APIs are REST APIs that allow you to pull phishing, training, user, and group data from the KnowBe4 console.",
+    "version": "v1"
+  },
+  "paths": {
+    "/account": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get Account And Subscription Data",
+        "description": "This endpoint retrieves account data from you KnowBe4 account, including your subscription level, number of seats, risk score history, and more.",
+        "operationId": "GetAccountAndSubscriptionData",
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://us.api.knowbe4.com/v1",
+            "description": "US Server"
+          },
+          {
+            "url": "https://eu.api.knowbe4.com/v1",
+            "description": "EU Server"
+          },
+          {
+            "url": "https://ca.api.knowbe4.com/v1",
+            "description": "CA Server"
+          },
+          {
+            "url": "https://uk.api.knowbe4.com/v1",
+            "description": "UK Server"
+          },
+          {
+            "url": "https://de.api.knowbe4.com/v1",
+            "description": "DE Server"
+          }
+        ]
+      }
+    },
+    "/account/risk_score_history": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "summary": "Get Account Risk Score History",
+        "description": "This endpoint retrieves your KnowBe4 account risk score history.",
+        "operationId": "GetAccountRiskScoreHistory",
+        "parameters": [
+          {
+            "name": "full",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HistoricalRiskScore"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups": {
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Get a List of All Groups",
+        "description": "This endpoint retrieves a list of all groups in your KnowBe4 account.",
+        "operationId": "GetAListOfAllGroups",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/Status"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Group"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups/{group_id}": {
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Get a Specific Group",
+        "description": "This endpoint retrieves a specific group in your KnowBe4 account, based on the provided group identifier (group_id).",
+        "operationId": "GetASpecificGroup",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Group"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group/{group_id}/risk_score_history": {
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Get a Specific Group's Risk Score History",
+        "description": "This endpoint retrieves risk score history for a specific group in your KnowBe4 account, based on the provided group identifier (group_id).",
+        "operationId": "GetASpecificGroupsRiskScoreHistory",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HistoricalRiskScore"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/phishing/campaigns": {
+      "get": {
+        "tags": [
+          "Phishing"
+        ],
+        "summary": "Get All Phishing Campaigns",
+        "description": "This (undocumented) endpoint retrieves a list of all phishing campaigns in your account.",
+        "operationId": "GetAListOfAllPhishingCampaigns",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PhishingCampaign"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/phishing/campaigns/{campaign_id}": {
+      "get": {
+        "tags": [
+          "Phishing"
+        ],
+        "summary": "Get a Specific Phishing Campaign",
+        "description": "This endpoint retrieves data from a specific phishing campaign, based on the provided campaign identifier (campaign_id).",
+        "operationId": "GetASpecificPhishingCampaign",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "campaign_type",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/CampaignType"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhishingCampaign"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/phishing/security_tests": {
+      "get": {
+        "tags": [
+          "Phishing"
+        ],
+        "summary": "Get All Phishing Security Tests (PSTs)",
+        "description": "This endpoint retrieves a list of all phishing security tests in your account.",
+        "operationId": "GetAllPhishingSecurityTests",
+        "parameters": [
+          {
+            "name": "campaign_type",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/CampaignType"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PhishingSecurityTest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/phishing/campaigns/{campaign_id}/security_tests": {
+      "get": {
+        "tags": [
+          "Phishing"
+        ],
+        "summary": "Get All PSTs From a Specific Campaign",
+        "description": "This endpoint retrieves a list of all phishing security tests from a specific phishing campaign, based on the provided phishing campaign identifier (campaign_id).",
+        "operationId": "GetAllPSTsFromASpecificCampaign",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "campaign_type",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/CampaignType"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PhishingSecurityTest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/phishing/security_tests/{pst_id}": {
+      "get": {
+        "tags": [
+          "Phishing"
+        ],
+        "summary": "Get a Specific PST",
+        "description": "This endpoint retrieves data from a specific phishing security test, based on the provided phishing security test identifier (pst_id).",
+        "operationId": "GetASpecificPST",
+        "parameters": [
+          {
+            "name": "pst_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "campaign_type",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/CampaignType"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhishingSecurityTest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/phishing/security_tests/{pst_id}/recipients": {
+      "get": {
+        "tags": [
+          "Phishing"
+        ],
+        "summary": "Get All Recipient Results",
+        "description": "This endpoint retrieves a list of all the recipients (users) that were part of a specific phishing security test, based on the provided phishing security test identifier (pst_id).",
+        "operationId": "GetAllRecipientResults",
+        "parameters": [
+          {
+            "name": "pst_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "campaign_type",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/CampaignType"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipientResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/phishing/security_tests/{pst_id}/recipients/{recipient_id}": {
+      "get": {
+        "tags": [
+          "Phishing"
+        ],
+        "summary": "Get a Specific Recipient's Results",
+        "description": "This endpoint retrieves details about a specific user's phishing security test results, based on the provided phishing security test identifier (pst_id) and recipient identifier (recipient_id).",
+        "operationId": "GetASpecificRecipientsResults",
+        "parameters": [
+          {
+            "name": "pst_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "recipient_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "campaign_type",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/CampaignType"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipientResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/training/store_purchases": {
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "summary": "Get all Store Purchases",
+        "description": "This endpoint retrieves a list of all Store Purchases in your KnowBe4 account.",
+        "operationId": "GetAllStorePurchases",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StorePurchase"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/training/store_purchases/{store_purchase_id}": {
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "summary": "Get a Specific Store Purchase",
+        "description": "This endpoint retrieves a specific Store Purchase from your KnowBe4 account.",
+        "operationId": "GetASpecificStorePurchase",
+        "parameters": [
+          {
+            "name": "store_purchase_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StorePurchase"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/training/policies": {
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "summary": "Get all Policies",
+        "description": "This endpoint retrieves a list of all uploaded policies in your KnowBe4 account.",
+        "operationId": "GetAllPolicies",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Policy"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/training/policies/{policies_id}": {
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "summary": "Get a Specific Policy",
+        "description": "This endpoint retrieves a specific uploaded policy from your KnowBe4 account.",
+        "operationId": "GetASpecificPolicy",
+        "parameters": [
+          {
+            "name": "policies_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Policy"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/training/campaigns": {
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "summary": "Get all Training Campaigns",
+        "description": "This endpoint retrieves a list of all Training Campaigns in your KnowBe4 account.",
+        "operationId": "GetAllTrainingCampaigns",
+        "parameters": [
+          {
+            "name": "exclude_percentages",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TrainingCampaign"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/training/campaigns/{campaign_id}": {
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "summary": "Get a Specific Training Campaign",
+        "description": "This endpoint retrieves a specific Training Campaign from your KnowBe4 account.",
+        "operationId": "GetASpecificTrainingCampaign",
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrainingCampaign"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/training/enrollments": {
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "summary": "Get all Training Enrollments",
+        "description": "This endpoint retrieves a list of all Training Enrollments in your KnowBe4 account.",
+        "operationId": "GetAllTrainingEnrollments",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "exclude_archived_users",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "store_purchase_id",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "include_store_purchase_id",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "campaign_id",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "include_campaign_id",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TrainingEnrollment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/training/enrollments/{enrollment_id}": {
+      "get": {
+        "tags": [
+          "Training"
+        ],
+        "summary": "Get a Specific Training Enrollment",
+        "description": "This endpoint retrieves a specific Training Enrollment from your KnowBe4 account.",
+        "operationId": "GetASpecificTrainingEnrollment",
+        "parameters": [
+          {
+            "name": "enrollment_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "include_campaign_id",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrainingEnrollment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a List of All Users",
+        "description": "This endpoint retrieves a list of all users in your KnowBe4 account.",
+        "operationId": "GetAListOfUsers",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/Status"
+            }
+          },
+          {
+            "name": "group_id",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/Expand"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a Specific User",
+        "description": "This endpoint retrieves a specific user based on the provided user identifier (user_id).",
+        "operationId": "GetASpecificUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups/{group_id}/members": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a List of Users in a Specific Group",
+        "description": "This endpoint retrieves a list of all users who are members of a specific group.",
+        "operationId": "GetAListOfUsersInASpecificGroup",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/risk_score_history": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a Specific User's Risk Score History",
+        "description": "This endpoint retrieves risk score history for a specific user based on the provided user identifier (user_id).",
+        "operationId": "GetASpecificUsersRiskScoreHistory",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": { }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HistoricalRiskScore"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Account": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "domains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "admins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Admin"
+            },
+            "nullable": true
+          },
+          "subscription_level": {
+            "type": "string",
+            "nullable": true
+          },
+          "subscription_end_date": {
+            "type": "string",
+            "nullable": true
+          },
+          "number_of_seats": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "current_risk_score": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Admin": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CampaignType": {
+        "enum": [
+          "callback"
+        ],
+        "type": "string"
+      },
+      "CategoryBase": {
+        "type": "object",
+        "properties": {
+          "category_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Content": {
+        "type": "object",
+        "properties": {
+          "store_purchase_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "retired": {
+            "type": "boolean"
+          },
+          "retirement_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publish_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publisher": {
+            "type": "string",
+            "nullable": true
+          },
+          "purchase_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "policy_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "policy_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minimum_time": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "default_language": {
+            "type": "string",
+            "nullable": true
+          },
+          "published": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EnrollmentUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "employee_number": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Expand": {
+        "enum": [
+          "group"
+        ],
+        "type": "string"
+      },
+      "Group": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "group_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "provisioning_guid": {
+            "type": "string",
+            "nullable": true
+          },
+          "member_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "current_risk_score": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GroupBase": {
+        "type": "object",
+        "properties": {
+          "group_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HistoricalRiskScore": {
+        "type": "object",
+        "properties": {
+          "risk_score": {
+            "type": "number",
+            "format": "double"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LandingPage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PhishingCampaign": {
+        "type": "object",
+        "properties": {
+          "campaign_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupBase"
+            },
+            "nullable": true
+          },
+          "last_phish_prone_percentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "last_run": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "hidden": {
+            "type": "boolean"
+          },
+          "send_duration": {
+            "type": "string",
+            "nullable": true
+          },
+          "track_duration": {
+            "type": "string",
+            "nullable": true
+          },
+          "frequency": {
+            "type": "string",
+            "nullable": true
+          },
+          "difficulty_filter": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "create_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "psts_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "psts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhishingSecurityTestBase"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PhishingSecurityTest": {
+        "type": "object",
+        "properties": {
+          "campaign_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pst_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupBase"
+            },
+            "nullable": true
+          },
+          "phish_prone_percentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryBase"
+            },
+            "nullable": true
+          },
+          "template": {
+            "$ref": "#/components/schemas/Template"
+          },
+          "landing_page": {
+            "$ref": "#/components/schemas/LandingPage"
+          },
+          "scheduled_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "delivered_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "opened_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "clicked_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "replied_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "attachment_open_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "macro_enabled_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "data_entered_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "qr_code_scanned_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reported_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bounced_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "called_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "callback_data_entered_count": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PhishingSecurityTestBase": {
+        "type": "object",
+        "properties": {
+          "pst_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "users_count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "phish_prone_percentage": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Policy": {
+        "type": "object",
+        "properties": {
+          "policy_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "minimum_time": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "default_language": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecipientResult": {
+        "type": "object",
+        "properties": {
+          "recipient_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pst_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserBase"
+          },
+          "template": {
+            "$ref": "#/components/schemas/Template"
+          },
+          "scheduled_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "delivered_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "opened_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "clicked_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "replied_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "attachment_opened_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "macro_enabled_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "data_entered_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "qr_code_scanned": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "called": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "callback_data_entered": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reported_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "bounced_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ip": {
+            "type": "string",
+            "nullable": true
+          },
+          "ip_location": {
+            "type": "string",
+            "nullable": true
+          },
+          "browser": {
+            "type": "string",
+            "nullable": true
+          },
+          "browser_version": {
+            "type": "string",
+            "nullable": true
+          },
+          "os": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Status": {
+        "enum": [
+          "active",
+          "archived"
+        ],
+        "type": "string"
+      },
+      "StorePurchase": {
+        "type": "object",
+        "properties": {
+          "store_purchase_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "retired": {
+            "type": "boolean"
+          },
+          "retirement_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publish_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publisher": {
+            "type": "string",
+            "nullable": true
+          },
+          "purchase_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "policy_url": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Template": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "difficulty": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TrainingCampaign": {
+        "type": "object",
+        "properties": {
+          "campaign_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupBase"
+            },
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Content"
+            },
+            "nullable": true
+          },
+          "duration_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "relative_duration": {
+            "type": "string",
+            "nullable": true
+          },
+          "auto_enroll": {
+            "type": "boolean"
+          },
+          "allow_multiple_enrollments": {
+            "type": "boolean"
+          },
+          "completion_percentage": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TrainingEnrollment": {
+        "type": "object",
+        "properties": {
+          "enrollment_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "module_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/EnrollmentUser"
+          },
+          "campaign_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "enrollment_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completion_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "time_spent": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "policy_acknowledged": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "employee_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "first_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "job_title": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phish_prone_percentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "phone_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "extension": {
+            "type": "string",
+            "nullable": true
+          },
+          "mobile_phone_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "division": {
+            "type": "string",
+            "nullable": true
+          },
+          "manager_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "manager_email": {
+            "type": "string",
+            "nullable": true
+          },
+          "provisioning_managed": {
+            "type": "boolean"
+          },
+          "provisioning_guid": {
+            "type": "string",
+            "nullable": true
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "current_risk_score": {
+            "type": "number",
+            "format": "double"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "joined_on": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_sign_in": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "organization": {
+            "type": "string",
+            "nullable": true
+          },
+          "department": {
+            "type": "string",
+            "nullable": true
+          },
+          "language": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "employee_start_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "archived_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "custom_field1": {
+            "type": "string",
+            "nullable": true
+          },
+          "custom_field2": {
+            "type": "string",
+            "nullable": true
+          },
+          "custom_field3": {
+            "type": "string",
+            "nullable": true
+          },
+          "custom_field4": {
+            "type": "string",
+            "nullable": true
+          },
+          "custom_date1": {
+            "type": "string",
+            "nullable": true
+          },
+          "custom_date2": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserBase": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "provisioning_guid": {
+            "type": "string",
+            "nullable": true
+          },
+          "first_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
